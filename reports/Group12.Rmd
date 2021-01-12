@@ -19,7 +19,7 @@ gapminder_data <- read_csv("../data/gapminder_data.csv")
 
 ```{r plot of year vs population}
 ggplot(data = gapminder_data) +
-  geom_point(aes(x = year, y = pop)) +
+  geom_point(aes(x = year, y = pop/1000000)) +
   facet_wrap(vars(continent)) +
   labs(x = "Year", y = "Population Per Mil")
   
@@ -31,3 +31,14 @@ gapminder_data %>%
 ```
 
 Countries with populations over 1E9 are China and India.
+
+```{r plot without China and India}
+gapminder_data <- gapminder_data %>% 
+  filter(country != "China", country !="India")
+  ggplot(data = gapminder_data) +
+  geom_point(aes(x = year, y = pop/1000000)) +
+  facet_wrap(vars(continent)) +
+  labs(x = "Year", y = "Population Per Mil")
+
+```
+
