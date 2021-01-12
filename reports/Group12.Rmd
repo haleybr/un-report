@@ -9,3 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r packages}
+library(tidyverse)
+```
+
+```{r data}
+gapminder_data <- read_csv("../data/gapminder_data.csv")
+```
+
+```{r plot of year vs population}
+ggplot(data = gapminder_data) +
+  geom_point(aes(x = year, y = pop/1000000)) +
+  facet_wrap(vars(continent)) +
+  labs(x = "Year", y = "Population Per Mil")
+  
+```
+
