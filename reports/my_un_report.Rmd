@@ -13,12 +13,15 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse) ##contains ggplot package
 ```
 
+# Introduction
+
 This report was prepared to the attention of the United Nations. It analyzes the relationship between a country's GDP, its life expectancy and CO2 emissions. Our goal is to determine to what degree a country’s economic strength or weakness may be related to its public health status and impact on climate pollution. We hypothesize that both life expectancy and CO2 emissions increase with a country's GDP.
 
 ```{r data}
 gapminder_1997 <- read_csv("../data/gapminder_1997.csv")
 ```
 
+# My Plot
 ```{r gdp_lifeexp_1997}
 ggplot(data = gapminder_1997) +
   aes(x = gdpPercap, y = lifeExp, color = continent) +
@@ -30,3 +33,10 @@ nCountries <- length(unique(gapminder_1997$country))
 ```
 
 The number of countries that entered the above analysis was `r nCountries`.
+
+# Syntax Practice
+1. R - it's the only one I know
+2. _ggplot_
+3. ***practicing***
+4. [RMarkdown Cheatsheat](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+

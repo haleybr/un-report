@@ -1,0 +1,11 @@
+---
+title: "Group 12"
+author: "Haley Brown, Jade Bowers, Amanda Photenhauer"
+date: "1/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
