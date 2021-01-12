@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r packages}
+```{r packages, include=FALSE}
 library(tidyverse) ##contains ggplot package
 ```
 
@@ -24,3 +24,9 @@ ggplot(data = gapminder_1997) +
   aes(x = gdpPercap, y = lifeExp, color = continent) +
   geom_point() + labs(x = "GDP per capita", y = "Life Expectancy", title = "GDP per capita vs. Life Expectancy")
 ```
+
+```{r data_summary, include=FALSE}
+nCountries <- length(unique(gapminder_1997$country))
+```
+
+The number of countries that entered the above analysis was `r nCountries`.
