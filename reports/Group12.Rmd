@@ -38,7 +38,66 @@ gapminder_data <- gapminder_data %>%
   ggplot(data = gapminder_data) +
   geom_point(aes(x = year, y = pop/1000000)) +
   facet_wrap(vars(continent)) +
-  labs(x = "Year", y = "Population Per Mil")
+  labs(x = "Year", y = "Population Per Mil") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  geom_line(aes(x = year, y = pop/1000000, group = country))
+```
+```{r highest life expectancy in 1982}
+gapminder_data %>% 
+  filter(year ==1982) %>% 
+  slice_max(lifeExp)
+```
+Japan had the highest life Expectancy in 1982.
+
+```{r highest life expectancy in each year}
+gapminder_data %>% 
+  group_by(year) %>% 
+  slice_max(lifeExp) %>% 
+  select(country, year, lifeExp)
+```
+```{r Make a boxplot for the life expectancies of the countries in Asia for each year (year is the x axis, life expectancy is the y axis). Also fix the x and y axis labels.}
+gapminder_data %>% 
+  filter(continent == "Asia")
+  ggplot(data = gapminder_data) +
+  geom_boxplot(aes(x = year, y = lifeExp, group = year)) +
+  labs(x = "Year", y = "Life Expectancy") +
+  ylim(0,100) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+```{r What are the outliers in life expectancy in Asia for each year (lower life expectancy)?}
+gapminder_data %>% 
+  filter(continent == "Asia") %>% 
+  group_by(year) %>% 
+  slice_min(lifeExp)
+```
+``` {r Make a boxplot for the life expectancies of the countries over time for each continent. Try to fix the x and y axis labels and text, too. Feel free to change the theme if you’d like.}
+gapminder_data %>% 
+  ggplot(data = gapminder_data, mapping = aes(x = year, y = lifeExp, group = year)) +
+  geom_boxplot() + 
+  facet_wrap(vars(continent)) +
+  labs(x = "Year", y = "Life Expectancy") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  theme_bw()
+```
+
+``` {r Which country has had the greatest increase in life expectancy from 1952 to 2007? HINT: You might want to use the pivot_wider() function to get your data in a format with columns for: country, 1952 life expectancy, 2007 life expectancy, and the difference between 2007 and 1992 life expectancy}
+gapminder_data %>% 
+  filter(year == 1952 | year == 2007) %>% 
+  select(country, year, lifeExp) %>% 
+  pivot_wider(names_from = year, values_from = lifeExp) %>% 
+  rename("LifeExp1952" = "1952", "LifeExp2007" = "2007") %>% 
+  mutate(difference = LifeExp2007-LifeExp1952) %>% 
+  slice_max(difference)
+```
+
+```{r What countries had a decrease in life expectancy from 1952 to 2007?}
+gapminder_data %>% 
+  filter(year == 1952 | year == 2007) %>% 
+  select(country, year, lifeExp) %>% 
+  pivot_wider(names_from = year, values_from = lifeExp) %>% 
+  rename("LifeExp1952" = "1952", "LifeExp2007" = "2007") %>% 
+  mutate(difference = LifeExp2007-LifeExp1952) %>% 
+  filter(difference<0)
 
 ```
 

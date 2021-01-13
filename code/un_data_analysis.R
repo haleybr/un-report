@@ -144,7 +144,7 @@ gapminder_co2 <- inner_join(gapminder_data, co2_emissions, by = "country")
 View(gapminder_co2)
 
 # using mutate and the if_else function together
-# if_else(conidition, true, false)
+# if_else(condition, true, false)
 gap_co2_region <- gapminder_co2 %>% 
   mutate(region = if_else(country == "Canada" | country == "United States" | country == "Mexico",
                           "north", "south"))
