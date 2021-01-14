@@ -1,0 +1,68 @@
+---
+title: "UN Data Practice"
+author: "Haley Brown"
+date: "1/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library, include=FALSE}
+library(tidyverse)
+```
+
+```{r data}
+un_data <- read_csv("../data/rnd-un-data.csv", skip = 2, col_names = c("region", "country", "year", "series", "value", "footnotes", "source")) %>% 
+  mutate(series = recode(series,
+                         "Gross domestic expenditure on R & D: as a percentage of GDP (%)" = "gde_percentage_gdp", "Gross domestic expenditure on R & D: Business enterprises (%)" = "gde_business_enterprises", "Gross domestic expenditure on R & D: Government (%)" = "gde_government", 
+                         "Gross domestic expenditure on R & D: Higher education (%)" = "gde_higher_ed", 
+                         "Gross domestic expenditure on R & D: Funds from abroad (%)" = "gde_abroad", 
+                         "Gross domestic expenditure on R & D: Not distributed (%)" = "gde_not_distributed", 
+                         "Gross domestic expenditure on R & D: Private non-profit (%)" = "gde_private_non-profit")) %>% 
+  pivot_wider(names_from = series, values_from = value) %>% 
+  select(-source)
+co2_data <- read_csv("../data/co2-un-data.csv", skip = 2, col_names = c("region", "country", "year", "series", "value", "footnotes", "source")) %>% 
+  mutate(series = recode(series, 
+                         "Emissions (thousand metric tons of carbon dioxide)" = "total_emissions",
+                         "Emissions per capita (metric tons of carbon dioxide)" = "per_capita_emissions"))
+View(un_data)
+View(co2_data)
+```
+
+```{r Plot the distribution of percent expenditure using a histogram. Observe the range and how heavy the “tails” are. Note: You will likely get a note and a warning. Feel free to change the number of bins as the note describes. Why do you get warnings? (Hint: Look at the column you’re plotting.). Bonus: Plot the same exact data in a way in which you don’t get warnings.}
+un_data %>% filter(!is.na(gde_percentage_gdp)) %>% 
+  ggplot(mapping = aes(x = gde_percentage_gdp)) +
+  geom_histogram(bins = 30)
+```
+```{r plot expenditure by year}
+un_data %>% filter(!is.na(gde_percentage_gdp)) %>% 
+  ggplot(mapping = aes(x = as.character(year), y = gde_percentage_gdp)) +
+  geom_point(alpha=0.5) +
+  labs(x = "Year")
+```
+```{r Plot the expenditure by year (discrete x vs continuous y) using a violin plot or a boxplot.}
+un_data %>% filter(!is.na(gde_percentage_gdp)) %>% 
+  ggplot(mapping = aes(x = as.character(year), y = gde_percentage_gdp)) +
+  geom_boxplot() +
+  labs(x = "Year")
+```
+```{r Merge the CO2 dataset and the R&D dataset together. Keep only the following colums: country, year, total CO2 emissions, CO2 emissions per capita, and percent of GDP used for R&D.}
+un_data <- un_data %>%
+  filter(!is.na(gde_percentage_gdp)) %>% 
+  select(country, year, gde_percentage_gdp)
+co2_data <- co2_data %>% 
+  select(country, year, series, value) %>% 
+  pivot_wider(names_from = series, values_from = value)
+```
+
+
+
+
+
+
+
+
+
+
