@@ -63,6 +63,25 @@ View(combo_data)
 combo_data %>% group_by(year) %>% 
   summarize(count=n())
 ```
+```{r Plot R&D expenditure vs. CO2 emission for each country using a scatter plot. You can choose total or per-capita CO2 emissions, or both. Make sure you have informative x and y axis labels.}
+combo_data %>% 
+  ggplot(data=combo_data, mapping = aes(x = gde_percentage_gdp, y = per_capita_emissions)) +
+  geom_point() +
+  labs(x = "R&D expenditure", y = "Per Capita CO2 Emissions" )
+```
+```{r Next, facet the above plot by year.}
+combo_data %>% 
+  ggplot(data=combo_data, mapping = aes(x = gde_percentage_gdp, y = per_capita_emissions)) +
+  geom_point() +
+  facet_wrap(vars(year)) +
+  labs(x = "R&D expenditure", y = "Per Capita CO2 Emissions" )
+```
+```{r Identify the countries that have five time points for both C02 emissions and R&D.}
+combo_data %>% group_by(country) %>% 
+  summarize(count=n()) %>% 
+  filter(count==5)
+
+```
 
 
 
