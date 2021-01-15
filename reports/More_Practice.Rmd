@@ -27,8 +27,6 @@ co2_data <- read_csv("../data/co2-un-data.csv", skip = 2, col_names = c("region"
   mutate(series = recode(series, 
                          "Emissions (thousand metric tons of carbon dioxide)" = "total_emissions",
                          "Emissions per capita (metric tons of carbon dioxide)" = "per_capita_emissions"))
-View(un_data)
-View(co2_data)
 ```
 
 ```{r Plot the distribution of percent expenditure using a histogram. Observe the range and how heavy the “tails” are. Note: You will likely get a note and a warning. Feel free to change the number of bins as the note describes. Why do you get warnings? (Hint: Look at the column you’re plotting.). Bonus: Plot the same exact data in a way in which you don’t get warnings.}
@@ -55,6 +53,15 @@ un_data <- un_data %>%
 co2_data <- co2_data %>% 
   select(country, year, series, value) %>% 
   pivot_wider(names_from = series, values_from = value)
+combo_data <- full_join(un_data, co2_data) %>% 
+  filter(!is.na(total_emissions)) %>% 
+  filter(!is.na(per_capita_emissions)) %>% 
+  filter(!is.na(gde_percentage_gdp))
+View(combo_data)
+```
+```{r How many countries per year do you have after filtering? HINT: You can use summarize(count=n()) to help you out.}
+combo_data %>% group_by(year) %>% 
+  summarize(count=n())
 ```
 
 
